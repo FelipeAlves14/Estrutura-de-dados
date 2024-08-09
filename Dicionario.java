@@ -9,12 +9,12 @@ public class Dicionario{
     }
     private int n = 0;
     private Object[] data = new Object[10]; // vai começar com 10 elementos pq sim :D
-    private Object binarySearch(Object element, int min, int max, int tam){
-        int meio = tam / 2;
-        if(data[meio] == element) return data[meio];
+    private Object binarySearch(int key, int min, int max){
+        int meio = (min + max) / 2;
+        if(data[meio] == data[key]) return data[key];
         if(min > max) throw new BaseException("Tem esse trem aq não KKKKKKKKKKKKKKKKK");
-        if(element > data[meio]) binarySearch(element, meio+1, max, tam/2);
-        else binarySearch(element, min, meio, tam/2);
+        if(data[key] > data[meio]) binarySearch(key, meio, max);
+        else binarySearch(key, min, meio-1);
     }
     public int size(){
         return n;
@@ -35,7 +35,7 @@ public class Dicionario{
         }
         return elements;
     }
-    public Object findElement(Object element){
-        return binarySearch(element, 0, n-1, n);
+    public Object findElement(int key){
+        return binarySearch(key, 0, n-1);
     }
 }
