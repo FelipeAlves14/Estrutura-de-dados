@@ -31,10 +31,10 @@ public class Dicionario{
         return keys;
     }
     public Object[] Elements(){
-        Object elements = new Object[n];
+        Object[] elements = new Object[n];
         int index = 0;
         for(int i = 0; i < data.length; ++i){
-            if(data[i] != null && !data[i].equals(Avaliable)) elements[index++] = data[i];
+            if(data[i] != null && !(data[i] instanceof Avaliable)) elements[index++] = data[i];
         }
         return elements;
     }
@@ -44,10 +44,10 @@ public class Dicionario{
     public void insert(Object obj){
         int element = (int)obj; // conversão pra calcular na função
         int index = data.length % element; // função provisória, quiser trocar fique a vontade
-        if(n == datas.length - 1){
+        if(n == data.length - 1){
             // rehash (preguiça de fazer)
         }
-        while(data[index] != null && !data[index].equals(Avaliable)) index = ++index % data.length;
+        while(data[index] != null && !(data[index] instanceof Avaliable)) index = ++index % data.length;
         /*  
         se tiver vazio pula o while e é dentro
         caso contrário vai modificando o index pelo Linear Probing até achar um espaço vazio
