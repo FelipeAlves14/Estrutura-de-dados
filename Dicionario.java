@@ -31,6 +31,7 @@ public class Dicionario{
         return keys;
     }
     public Object[] Elements(){
+        if(isEmpty()) throw new NO_SUCH_KEY("Dicionário ta vazio po KKKKKKKKKKKKKKKKKKKKKK");
         Object[] elements = new Object[n];
         int index = 0;
         for(int i = 0; i < data.length; ++i){
@@ -39,6 +40,7 @@ public class Dicionario{
         return elements;
     }
     public Object findElement(int key){
+        if(isEmpty()) throw new NO_SUCH_KEY("Dicionário ta vazio po KKKKKKKKKKKKKKKKKKKKKK");
         if(key >= n) throw new NO_SUCH_KEY("Tem essa chave aq não po KKKKKKKKKKKKKKKKKKKKKK");
         return data[key];
     }
@@ -65,6 +67,7 @@ public class Dicionario{
         ++n;
     }
     public Object removeElement(int key){
+        if(isEmpty()) throw new NO_SUCH_KEY("Dicionário ta vazio po KKKKKKKKKKKKKKKKKKKKKK");
         if(key >= n) throw new NO_SUCH_KEY("Tem essa chave aq não po KKKKKKKKKKKKKKKKKKKKKK");
         Object retorno = data[key];
         if(retorno instanceof Avaliable || retorno == null) throw new NO_SUCH_KEY("Tem nada aq não po vai remover oq KKKKKKKKKKKKKKKKKKKKKK");
