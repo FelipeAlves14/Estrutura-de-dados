@@ -6,6 +6,11 @@ public class Dicionario{
         public NO_SUCH_KEY(String err){
             super(err);
         }
+
+        @Override
+        public String toString(){ // não funciona como deve, mas ta ai :D
+            return "Espaço disponível";
+        }
     }
     private int n = 0;
     private Object[] data = new Object[10]; // vai começar com 10 elementos pq sim :D
@@ -25,8 +30,8 @@ public class Dicionario{
     public boolean isEmpty(){
         return n == 0;
     }
-    public Object[] keys(){
-        Object[] keys = new Object[data.length];
+    public int[] keys(){
+        int[] keys = new int[data.length];
         for(int i = 0; i < data.length; ++i) keys[i] = i;
         return keys;
     }
@@ -41,7 +46,7 @@ public class Dicionario{
     }
     public Object findElement(int key){
         if(isEmpty()) throw new NO_SUCH_KEY("Dicionário ta vazio po KKKKKKKKKKKKKKKKKKKKKK");
-        if(key >= n) throw new NO_SUCH_KEY("Tem essa chave aq não po KKKKKKKKKKKKKKKKKKKKKK");
+        if(key >= data.length) throw new NO_SUCH_KEY("Tem essa chave aq não po KKKKKKKKKKKKKKKKKKKKKK");
         return data[key];
     }
     public void insert(Object obj){
@@ -50,14 +55,14 @@ public class Dicionario{
             Object[] elements = Elements(); // array só com os elementos
             for(int i = 0; i < n; ++i){ // inserção normal com nova função 
                 int element = (int)elements[i];
-                int index = new_data.length % element;
+                int index = element % new_data.length;
                 while(new_data[index] != null) index = ++index % new_data.length;
                 new_data[index] = elements[i];       
             }
             data = new_data;
         }
         int element = (int)obj; // conversão pra calcular na função
-        int index = data.length % element; // função provisória, quiser trocar fique a vontade
+        int index = element % data.length; // função provisória, quiser trocar fique a vontade
         while(data[index] != null && !(data[index] instanceof Avaliable)) index = ++index % data.length;
         /*  
         se tiver vazio pula o while e é dentro
