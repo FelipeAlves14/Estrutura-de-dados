@@ -1,4 +1,4 @@
-# Estruturas de Dados Lineares
+# Estruturas de Dados
 
 ## Pilhas
 
@@ -19,3 +19,7 @@
 ## Sequências
 
 &emsp;[Sequências](sequencia/) são estruturas que fazem tudo que um vetor e uma lista fazem, sendo de forma prática uma mesclagem das duas estruturas.
+
+## Árvores
+
+&emsp;[Árvores](arvores/) são estruturas por muitas vezes não lineares, que se conectam através do conceito de elementos pais e filhos, sendo muito usadas em grandes aplicações utilizadas atualmente.
