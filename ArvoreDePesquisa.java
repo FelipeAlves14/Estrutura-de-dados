@@ -16,15 +16,13 @@ public class ArvoreDePesquisa{
     }
     @Override
     public String toString(){
-        String arvore = "";
-        inOrder(raiz, arvore);
-        return arvore;
+        inOrder(raiz);
+        return "";
     }
-
-    private void inOrder(No atual, String arvore){
-        if(hasLeft(atual)) inOrder(leftChild(atual), arvore);
+    private void inOrder(No atual){
+        if(hasLeft(atual)) inOrder(leftChild(atual));
         System.out.print(atual.element + " ");
-        if(hasRight(atual)) inOrder(rightChild(atual), arvore);
+        if(hasRight(atual)) inOrder(rightChild(atual));
     }
     private int n = 0;
     private No raiz;
@@ -131,14 +129,14 @@ public class ArvoreDePesquisa{
             }
         }
         else{
-            No aux = rightChild(no);
-            while(hasLeft(aux)) aux = leftChild(aux);
-            no.element = aux.element;
-            if(hasRight(aux)){
-                aux.element = rightChild(aux).element;
-                aux.rChild = null;
+            No substituto = rightChild(no);
+            while(hasLeft(substituto)) substituto = leftChild(substituto);
+            no.element = substituto.element;
+            if(hasRight(substituto)){
+                substituto.element = rightChild(substituto).element;
+                substituto.rChild = null;
             }
-            else aux = null;
+            else parent(substituto).lChild = null;
         }
         --n;
         return retorno;
