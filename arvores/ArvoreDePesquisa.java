@@ -5,8 +5,9 @@ public class ArvoreDePesquisa{
         }
     }
     public class No{
-        private No parent, lChild, rChild;
-        private Object element;
+        protected No parent, lChild, rChild;
+        protected Object element;
+        protected int fb = 0;
         public No(Object elem){
             element = elem;
         }
@@ -14,19 +15,20 @@ public class ArvoreDePesquisa{
             return element;
         }
     }
+    protected int n = 0;
+    protected No raiz;
     @Override
     public String toString(){
-        private void inOrder(No atual){
-            if(hasLeft(atual)) inOrder(leftChild(atual));
-            System.out.print(atual.element + " ");
-            if(hasRight(atual)) inOrder(rightChild(atual));
-        }
         if(isEmpty()) return "Árvore vazia";
         inOrder(raiz);
         return "";
     }
-    private int n = 0;
-    private No raiz;
+
+    protected void inOrder(No atual){
+        if(hasLeft(atual)) inOrder(leftChild(atual));
+        System.out.print(atual.element + " ");
+        if(hasRight(atual)) inOrder(rightChild(atual));
+    }
     public int size(){
         return n;
     }
