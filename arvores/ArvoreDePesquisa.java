@@ -20,7 +20,7 @@ public class ArvoreDePesquisa{
     protected No raiz;
     @Override
     public String toString(){
-        if(isEmpty()) return "Árvore vazia";
+        if(isEmpty()) return "arvore vazia";
         inOrder(raiz);
         return "";
     }
@@ -44,39 +44,39 @@ public class ArvoreDePesquisa{
         return n == 0;
     }
     public No root(){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return raiz;
     }
     public No parent(No no){
-        if(isRoot(no)) throw new BaseException("Elemento é o raíz não há pai");
+        if(isRoot(no)) throw new BaseException("Elemento e o raiz nao ha pai");
         return no.parent;
     }
     public No leftChild(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild;
     }
     public No rightChild(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.rChild;
     }
     public boolean hasLeft(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild != null;
     }
     public boolean hasRight(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.rChild != null;
     }
     public boolean isInternal(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild != null || no.rChild != null;
     }
     public boolean isExternal(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild == null && no.rChild == null;
     }
     public boolean isRoot(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no == raiz;
     }
     public int depth(No no){
@@ -98,7 +98,7 @@ public class ArvoreDePesquisa{
         if(isEmpty()) raiz = novo;
         else{
             No pai = find(elem, raiz);
-            if(pai.element == elem) throw new BaseException("Elemento já existe na Árvore");
+            if(pai.element == elem) throw new BaseException("Elemento ja existe na arvore");
             else{
                 if((int)elem < (int)pai.element) pai.lChild = novo;
                 else pai.rChild = novo;
@@ -108,10 +108,10 @@ public class ArvoreDePesquisa{
         ++n;
     }
     public No remove(Object elem){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         No no = find(elem, raiz);
         No retorno = no;
-        if(no.element != elem) throw new BaseException("Elemento não existe na Árvore");
+        if(no.element != elem) throw new BaseException("Elemento nao existe na arvore");
         boolean ehRaiz = isRoot(no);
         No pai = null;
         if(!ehRaiz) pai = parent(no);
@@ -155,7 +155,9 @@ public class ArvoreDePesquisa{
             if(hasRight(substituto)){
                 substituto = rightChild(substituto);
                 substituto.parent = pai;
-                pai.rChild = substituto;
+                if(leftChild(pai).element == retorno.element) pai.lChild = substituto;
+                else pai.rChild = substituto;
+
             }
             else{
                 if(substituto == leftChild(pai)) pai.lChild = null;

@@ -93,7 +93,7 @@ public class ArvoreAVL extends ArvoreDePesquisa {
         if(isEmpty()) raiz = novo;
         else{
             No pai = find(elem, raiz);
-            if(pai.element == elem) throw new BaseException("Elemento já existe na Árvore");
+            if(pai.element == elem) throw new BaseException("Elemento ja existe na arvore");
             else{
                 if((int)elem < (int)pai.element) pai.lChild = novo;
                 else pai.rChild = novo;
@@ -123,9 +123,9 @@ public class ArvoreAVL extends ArvoreDePesquisa {
     
     @Override
     public No remove(Object elem){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         No no = find(elem, raiz);
-        if(no.element != elem) throw new BaseException("Elemento não existe na Árvore");
+        if(no.element != elem) throw new BaseException("Elemento nao existe na arvore");
         No retorno = no;
         boolean ehRaiz = isRoot(no);
         No pai = null;
@@ -174,7 +174,8 @@ public class ArvoreAVL extends ArvoreDePesquisa {
             if(hasRight(substituto)){
                 substituto = rightChild(substituto);
                 substituto.parent = pai;
-                pai.rChild = substituto;
+                if(leftChild(pai).element == retorno.element) pai.lChild = substituto;
+                else pai.rChild = substituto;
             }
             else{
                 if(substituto == leftChild(pai)) pai.lChild = null;
