@@ -1,3 +1,4 @@
+package arvores;
 public class ArvoreDePesquisa{
     public class BaseException extends RuntimeException{
         public BaseException(String err){
@@ -97,7 +98,7 @@ public class ArvoreDePesquisa{
         if(isEmpty()) raiz = novo;
         else{
             No pai = find(elem, raiz);
-            if(pai.element == elem) throw new BaseException("Elemento ja existe na Árvore");
+            if(pai.element == elem) throw new BaseException("Elemento já existe na Árvore");
             else{
                 if((int)elem < (int)pai.element) pai.lChild = novo;
                 else pai.rChild = novo;
@@ -110,7 +111,7 @@ public class ArvoreDePesquisa{
         if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
         No no = find(elem, raiz);
         No retorno = no;
-        if(no.element != elem) throw new BaseException("Elemento não eáiste na Árvore");
+        if(no.element != elem) throw new BaseException("Elemento não existe na Árvore");
         boolean ehRaiz = isRoot(no);
         No pai = null;
         if(!ehRaiz) pai = parent(no);
