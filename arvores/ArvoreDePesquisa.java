@@ -9,13 +9,21 @@ public class ArvoreDePesquisa{
         protected No parent, lChild, rChild;
         protected Object element;
         protected int fb = 0;
+        protected String cor = "Rubro";
         public No(Object elem){
             element = elem;
+        }
+        public No(Object elem, String color){
+            element = elem;
+            cor = color;
+            lChild = nulo;
+            rChild = nulo;
         }
         public Object getElement(){
             return element;
         }
     }
+    protected No nulo = new No(null, "Negro");
     protected int n = 0;
     protected No raiz;
     @Override
