@@ -1,28 +1,72 @@
 package arvores;
 public class ArvoreRubroNegra extends ArvoreDePesquisa{
     
-    private void caso1(No no){
-
+    private void caso1(No no, No sucessor){
+        if(leftChild(no).cor == "Rubro") rotacaoSimplesDireita(no);
+        else rotacaoSimplesEsquerda(no);
+        parent(no).cor = "Negro";
+        no.cor = "Rubro";
+        if(sucessor.element == leftChild(no).element) caso2B(leftChild(no));
+        else caso2B(rightChild(no));
     }
 
-    private 
+    private void caso2B(No no){
+        No pai = parent(no);
+        No irmao = no == leftChild(pai) ? rightChild(pai) : leftChild(pai);
+        pai.cor = "Negro";
+        irmao.cor = "Rubro";
+        pai.duploNegro = 0;
+    }
+
+    private void caso4(No no, No sucessor){
+        String corNo = no.cor;
+        No pai = parent(no);
+        if(sucessor == leftChild(no)){
+            rotacaoSimplesEsquerda(no);
+            rightChild(pai).cor = "Negro";
+        }
+        else{
+            rotacaoSimplesDireita(no);
+            leftChild(pai).cor = "Negro";
+        }
+        pai.cor = corNo;
+        parent(sucessor).cor = "Negro";
+    }
 
     private void situacao3(No no){
         No pai = parent(no);
         No irmao = no == leftChild(pai) ? rightChild(pai) : leftChild(pai);
-        if(irmao.cor == "Rubro" && pai.cor == "Negro") caso1(pai);
+        if(irmao.cor == "Rubro" && pai.cor == "Negro") caso1(pai, no); // caso 1
         else{
             No sobrinhoPerto = no == leftChild(pai) ? leftChild(irmao) : rightChild(irmao);
             No sobrinhoLonge = no == leftChild(pai) ? rightChild(irmao) : leftChild(irmao);
-            if(irmao.cor == "Negro" && sobrinhoLonge.cor == "Negro" && sobrinhoPerto.cor == "Negro"){ // casos 2
-                if(pai.cor == "Rubro") pai.cor = "Negro"; // caso 2B
-                irmao.cor = "Rubro"; // ambos casos 2 o irmão vira rubro
+            if(irmao.cor == "Negro"){
+                if(sobrinhoLonge.cor == "Negro" && sobrinhoPerto.cor == "Negro"){
+                    if(pai.cor == "Rubro") caso2B(no); // caso 2B
+                    else{ // caso 2A
+                        irmao.cor = "Rubro";
+                        pai.duploNegro = 0;
+                        if(!isRoot(pai)){
+                            No avo = parent(pai);
+                            avo.duploNegro = pai == leftChild(avo) ? 1 : -1;
+                        }
+                    }
+                }
+                else if(sobrinhoLonge.cor == "Negro" && sobrinhoPerto.cor == "Rubro"){ // caso 3
+                    if(sobrinhoPerto == leftChild(irmao)) rotacaoSimplesDireita(irmao);
+                    else rotacaoSimplesEsquerda(irmao);
+                    irmao.cor = "Rubro";
+                    sobrinhoPerto.cor = "Negro";
+                    caso4(pai, no);
+                }
+                else if(sobrinhoLonge.cor == "Rubro") caso4(pai, no);
             }
         }
     }
 
     private void situacao4(No no){
-        
+        no.cor = "Rubro";
+        situacao3(no);
     }
 
     @Override
@@ -188,7 +232,11 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
                     filhoEsquerdo.parent = pai;
                     if(leftChild(pai) == no) pai.lChild = filhoEsquerdo;
                     else pai.rChild = filhoEsquerdo;
-                    if(retorno.cor == "Negro" && filhoEsquerdo.cor == "Rubro") filhoEsquerdo.cor = "Negro";
+                    if(retorno.cor == "Negro"){
+                        if(filhoEsquerdo.cor == "Rubro") filhoEsquerdo.cor = "Negro";
+                        else situacao3(filhoEsquerdo);
+                    }
+                    else situacao4(filhoEsquerdo);
                 }
             }
             else{
@@ -202,7 +250,11 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
                     filhoDireito.parent = pai;
                     if(leftChild(pai) == no) pai.lChild = filhoDireito;
                     else pai.rChild = filhoDireito;
-                    if(retorno.cor == "Negro" && filhoDireito.cor == "Rubro") filhoDireito.cor = "Negro";
+                    if(retorno.cor == "Negro"){
+                        if(filhoDireito.cor == "Rubro") filhoDireito.cor = "Negro";
+                        else situacao3(filhoDireito);
+                    }
+                    else situacao4(filhoDireito);
                 }
             }
         }
@@ -213,11 +265,14 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
             pai = parent(substituto);
             if(hasRight(substituto)){
                 No filhoDireito = rightChild(substituto);
-                if(substituto.cor == "Negro" && filhoDireito.cor == "Rubro") filhoDireito.cor = "Negro";
-                else if(substituto.cor == "Negro" && filhoDireito.cor == "Negro") situacao3(substituto);
                 filhoDireito.parent = pai;
                 if(leftChild(pai).element == retorno.element) pai.lChild = filhoDireito;
                 else pai.rChild = filhoDireito;
+                if(substituto.cor == "Negro"){
+                    if(filhoDireito.cor == "Rubro") filhoDireito.cor = "Negro";
+                    else situacao3(filhoDireito);
+                }
+                else situacao4(filhoDireito);
             }
             else{
                 if(substituto == leftChild(pai)){
