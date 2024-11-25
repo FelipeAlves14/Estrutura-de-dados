@@ -10,6 +10,7 @@ public class ArvoreDePesquisa{
         protected Object element;
         protected int fb = 0;
         protected String cor = "Rubro";
+        protected int duploNegro = 0;
         public No(Object elem){
             element = elem;
         }

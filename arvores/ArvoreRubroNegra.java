@@ -5,6 +5,7 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
     protected void inOrder(No atual){
         if(hasLeft(atual)) inOrder(leftChild(atual));
         System.out.print(atual.element + "[" + atual.cor + "]    ");
+        if(atual.duploNegro != 0) System.out.print("-> " + atual.duploNegro);
         if(hasRight(atual)) inOrder(rightChild(atual));
     }
 
@@ -87,13 +88,13 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
 
     @Override
     public boolean isInternal(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild != nulo || no.rChild != nulo;
     }
     
     @Override
     public boolean isExternal(No no){
-        if(isEmpty()) throw new BaseException("Árvore vazia, não há elementos");
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
         return no.lChild == nulo && no.rChild == nulo;
     }
 
@@ -117,7 +118,7 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
         }
         else{
             No pai = find(elem, raiz);
-            if(pai.element == elem) throw new BaseException("Elemento já existe na Árvore");
+            if(pai.element == elem) throw new BaseException("Elemento ja existe na arvore");
             else{
                 if((int)elem < (int)pai.element) pai.lChild = novo;
                 else pai.rChild = novo;
@@ -127,5 +128,73 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
             }
         }
         ++n;
-    }                                   
+    }
+
+    @Override
+    public No remove(Object elem){
+        if(isEmpty()) throw new BaseException("arvore vazia, nao ha elementos");
+        No no = find(elem, raiz);
+        No retorno = no;
+        if(no.element != elem) throw new BaseException("Elemento nao existe na arvore");
+        boolean ehRaiz = isRoot(no);
+        No pai = null;
+        if(!ehRaiz) pai = parent(no);
+        if(isExternal(no)){
+            if(ehRaiz) raiz = null;
+            else{
+                No esquerdo = leftChild(pai);
+                if(esquerdo == no){
+                    pai.lChild = nulo;
+                    if(retorno.cor == "Negro") pai.duploNegro = 1;
+                }
+                else{
+                    pai.rChild = nulo;
+                    if(retorno.cor == "Negro") pai.duploNegro = -1;
+                }
+            }
+        }
+        else if(hasLeft(no) && !hasRight(no) || !hasLeft(no) && hasRight(no)){
+            if(hasLeft(no)){
+                if(ehRaiz){
+                    raiz = leftChild(no);
+                    raiz.parent = null;
+                }
+                else{
+                    No filhoEsquerdo = leftChild(no);
+                    filhoEsquerdo.parent = pai;
+                    pai.lChild = filhoEsquerdo;
+                }
+            }
+            else{
+                if(ehRaiz){
+                    raiz = rightChild(no);
+                    raiz.parent = null;
+                }
+                else{
+                    No filhoDireito = rightChild(no);
+                    filhoDireito.parent = pai;
+                    pai.rChild = filhoDireito;
+                }
+            }
+        }
+        else{
+            No substituto = rightChild(no);
+            while(hasLeft(substituto)) substituto = leftChild(substituto);
+            no.element = substituto.element;
+            pai = parent(substituto);
+            if(hasRight(substituto)){
+                substituto = rightChild(substituto);
+                substituto.parent = pai;
+                if(leftChild(pai).element == retorno.element) pai.lChild = substituto;
+                else pai.rChild = substituto;
+
+            }
+            else{
+                if(substituto == leftChild(pai)) pai.lChild = nulo;
+                else pai.rChild = nulo;
+            }
+        }
+        --n;
+        return retorno;
+    }
 }
