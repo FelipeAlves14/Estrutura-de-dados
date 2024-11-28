@@ -9,7 +9,7 @@ public class ArvoreRubroNegra extends ArvoreDePesquisa{
         if(sucessor.element == leftChild(no).element) caso2B(leftChild(no));
         else caso2B(rightChild(no));
     }
-    // testeeeeeeeeeeeeeeeeeEEEEEEEEEEEEEEEEEEEEEEEE
+
     private void caso2B(No no){
         No pai = parent(no);
         No irmao = no == leftChild(pai) ? rightChild(pai) : leftChild(pai);
