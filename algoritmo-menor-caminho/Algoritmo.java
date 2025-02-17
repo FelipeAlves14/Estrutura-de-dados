@@ -1,30 +1,100 @@
-class Algoritmo{
+import java.lang.reflect.Array;
+import java.util.*;
+
+class Algoritmo {
 
 }
 
-class AlgoritmoAEstrela{
+class AlgoritmoAEstrela {
 
-    public int[][] menorCaminho(int[][] labirinto){
-        int entrada;
-        ArrayList<int> saidas = new ArrayList<int>();
-        for(int i = 0; i < labirinto.length; i++){
-            for(int j = 0; j < labirinto[i].length; j++){
-                if(labirinto[i][j] == 2) entrada = labirinto[i][j];
-                else if(labirinto[i][j] == 3) saidas.push_back(labirinto[i][j]);
+    public ArrayList<Vertice> menorCaminho(Integer[][] labirinto) {
+        Vertice entrada = new Vertice();
+        entrada.setValor(2);
+        ArrayList<ArrayList<Vertice>> caminhos = new ArrayList<ArrayList<Vertice>>();
+        ArrayList<Vertice> saidas = new ArrayList<Vertice>();
+        for (int i = 0; i < labirinto.length; i++) {
+            for (int j = 0; j < labirinto[i].length; j++) {
+                if (labirinto[i][j] == 2) {
+                    entrada.setX(i);
+                    entrada.setY(j);
+                } else if (labirinto[i][j] == 3) {
+                    Vertice saida = new Vertice();
+                    saida.setX(i);
+                    saida.setY(j);
+                    saidas.add(saida);
+                }
             }
         }
+        for(Vertice saida : saidas){
+            ArrayList<Vertice> caminho = new ArrayList<Vertice>();
+            caminho.add(entrada);
+
+
+
+            caminhos.add(caminho);
+
+        }
+
+    }
+
+    public Integer heuristic(Vertice entrada, Vertice saida) {
+        return (int) Math.sqrt(Math.pow(entrada.getX() - saida.getX(), 2) + Math.pow(entrada.getY() - saida.getY(), 2));
     }
 }
 
-class Vertice{
-    private int valor;
-    private ArrayList<Vertice> verticesComArestas = new ArrayList<Vertice>();
+class Vertice {
+    private Integer valor;
+    private Integer x;
+    private Integer y;
+    private Integer f;
+    private Integer g;
+    private Integer h;
 
-    public Vertice(int valor){
+    public Integer getX() {
+        return x;
+    }
+
+    public Integer getY() {
+        return y;
+    }
+
+    public Integer getValor() {
+        return valor;
+    }
+
+    public Integer getF() {
+        return f;
+    }
+
+    public Integer getG() {
+        return g;
+    }
+
+    public Integer getH() {
+        return h;
+    }
+
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
+    }
+
+    public void setValor(Integer valor) {
         this.valor = valor;
     }
-}
 
-class Aresta{
-    private Vertice[] vertices = new Vertice[2];
+    public void setG(Integer g) {
+        this.g = g;
+    }
+
+    public void setH(Integer h) {
+        this.h = h;
+    }
+
+    public void setF(Integer f) {
+        this.f = f;
+    }
 }
